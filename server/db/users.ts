@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { prisma } from './index';
 
 export interface UserData {
