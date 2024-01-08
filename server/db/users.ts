@@ -1,16 +1,22 @@
 import bcrypt from 'bcrypt';
-import { prisma } from './index';
+import { prisma } from '.';
+import type { PromiseType } from '@/types/utility';
 
-export interface UserData {
+export interface BaseUserData {
   username: string
   email: string
   password: string
-  repeatPassword?: string
   name: string
   profileImage?: string
 }
 
-export async function createUser(rawUserData: UserData) {
+export interface RegisteredUserData extends BaseUserData {
+  repeatPassword: string
+}
+
+export type CreatedUserData = PromiseType<ReturnType<typeof createUser>>;
+
+export async function createUser(rawUserData: BaseUserData) {
   const finalUserData = {
     ...rawUserData,
     password: bcrypt.hashSync(rawUserData.password, 10),
@@ -18,6 +24,26 @@ export async function createUser(rawUserData: UserData) {
 
   const user = await prisma.user.create({
     data: finalUserData,
+  });
+
+  return user;
+}
+
+export async function getUserByUsername(username: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+
+  return user;
+}
+
+export async function getUserById(id: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
   });
 
   return user;

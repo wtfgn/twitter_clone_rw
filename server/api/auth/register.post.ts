@@ -1,5 +1,6 @@
 import { sendError } from '#imports';
-import { type UserData, createUser } from '@/server/db/users';
+import { type RegisteredUserData, createUser } from '~/server/db/users';
+import { userTransformer } from '~/server/transformers/user';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -11,7 +12,7 @@ export default defineEventHandler(async (event) => {
     password,
     repeatPassword,
     name,
-  } = body as UserData;
+  } = body as RegisteredUserData;
 
   if (!username || !email || !password || !repeatPassword || !name) {
     return sendError(event, createError({
@@ -39,6 +40,6 @@ export default defineEventHandler(async (event) => {
   const user = await createUser(userData);
 
   return {
-    body: user,
+    body: userTransformer(user),
   };
 });
