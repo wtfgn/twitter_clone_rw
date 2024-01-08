@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { createRefreshToken } from '~/server/db/refreshToken';
+import { createRefreshToken } from '~/server/db/refreshTokens';
 import { getUserByUsername } from '~/server/db/users';
 import { userTransformer } from '~/server/transformers/user';
 import { generateTokens, sendRefreshToken } from '~/server/utils/jwt';
