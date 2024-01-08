@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode';
 import type { TransformedUserData } from '~/server/transformers/user';
 
 interface LoginData {
@@ -6,9 +7,9 @@ interface LoginData {
 }
 
 export function useAuth() {
-  const useAuthToken = () => useState('auth_token', () => '');
-  const useAuthUser = () => useState('auth_user', () => ({} as TransformedUserData));
-  const useAuthLoading = () => useState('auth_loading', () => true);
+  const useAuthToken = () => useState<string>('auth_token');
+  const useAuthUser = () => useState<TransformedUserData>('auth_user');
+  const useAuthLoading = () => useState<boolean>('auth_loading', () => true);
 
   const setToken = (newToken: string) => {
     const authToken = useAuthToken();
@@ -76,11 +77,31 @@ export function useAuth() {
     }
   };
 
+  const reRefreshAccessToken = () => {
+    const authToken = useAuthToken();
+
+    if (!authToken)
+      return;
+
+    const jwt = jwtDecode(authToken.value);
+
+    if (!jwt.exp)
+      return;
+
+    const newRefreshTime = jwt.exp - 60000;
+
+    setTimeout(async () => {
+      await refreshToken();
+      reRefreshAccessToken();
+    }, 100);
+  };
+
   const initAuth = async () => {
     setAuthLoading(true);
     try {
       await refreshToken();
       await getUser();
+      reRefreshAccessToken();
       return true;
     }
     catch (error) {
