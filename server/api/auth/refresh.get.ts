@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRefreshTokenByToken } from '~/server/db/refreshToken';
+import { getRefreshTokenByToken } from '~/server/db/refreshTokens';
 import { getUserById } from '~/server/db/users';
 import { decodeRefreshToken, generateTokens } from '~/server/utils/jwt';
 
