@@ -1,10 +1,11 @@
 <template>
   <div :class="{ dark: isDark }">
     <div class="bg-white dark:bg-gray-900">
+      <!-- Loading -->
       <LoadingPage v-if="isAuthLoading" />
 
       <!-- App -->
-      <div v-else-if="user.id" class="min-h-full">
+      <div v-else-if="isLoggedIn" class="min-h-full">
         <div class="grid grid-cols-12 mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:gap-5">
           <!-- Left Sidebar -->
           <div class="hidden md:block xs:col-span-1 xl:col-span-2">
@@ -43,6 +44,10 @@ const isDark = ref(false);
 const { useAuthUser, initAuth, useAuthLoading } = useAuth();
 const isAuthLoading = useAuthLoading();
 const user = useAuthUser();
+
+const isLoggedIn = computed(() => {
+  return user.value.id !== undefined;
+});
 
 // The user object wrapped in a proxy always return true
 // even if the user is not logged in
