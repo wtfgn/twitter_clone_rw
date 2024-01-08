@@ -46,7 +46,7 @@ const isAuthLoading = useAuthLoading();
 const user = useAuthUser();
 
 const isLoggedIn = computed(() => {
-  return user.value.id !== undefined;
+  return user.value?.id !== undefined;
 });
 
 // The user object wrapped in a proxy always return true
