@@ -104,6 +104,22 @@
             <span>More</span>
           </template>
         </SidebarLeftTab>
+
+        <!-- Tweet Button (show only if large screen) -->
+        <div class="hidden xl:block">
+          <UIButton liquid size="lg">
+            <span class="font-bold">Tweet</span>
+          </UIButton>
+        </div>
+
+        <!-- Pencil Icon (show only if smaller screen) -->
+        <div class="block xl:hidden">
+          <UIButton>
+            <div class="w-6 h-6 font-bold">
+              <PencilIcon />
+            </div>
+          </UIButton>
+        </div>
       </div>
     </div>
   </div>
@@ -117,6 +133,7 @@ import {
   EllipsisHorizontalCircleIcon,
   HashtagIcon,
   InboxIcon,
+  PencilIcon,
   UserIcon,
 } from '@heroicons/vue/24/outline';
 import { HomeIcon } from '@heroicons/vue/20/solid';
