@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
   if (!isHandledByMiddleware)
     return;
 
+  // Get access token from headers
   const token = event.node.req.headers.authorization?.split(' ')[1] || '';
 
   const decoded = decodeAccessToken(token);

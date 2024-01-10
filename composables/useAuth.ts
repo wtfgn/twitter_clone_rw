@@ -36,6 +36,7 @@ export function useAuth() {
       if (status.value === 'error' || !data.value)
         throw new Error('Invalid login');
 
+      // Update token and user state
       setToken(data.value.access_token);
       setUser(data.value.user);
 
@@ -77,6 +78,7 @@ export function useAuth() {
     }
   };
 
+  // Refresh access token 1 minute before it expires
   const reRefreshAccessToken = () => {
     const authToken = useAuthToken();
 
@@ -93,10 +95,11 @@ export function useAuth() {
     setTimeout(async () => {
       await refreshToken();
       reRefreshAccessToken();
-    }, 100);
+    }, newRefreshTime);
   };
 
   const initAuth = async () => {
+    // Used to prevent flash of unauthenticated content
     setAuthLoading(true);
     try {
       await refreshToken();
