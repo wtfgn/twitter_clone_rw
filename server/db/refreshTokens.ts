@@ -20,3 +20,11 @@ export async function getRefreshTokenByToken(token: string) {
 
   return refreshToken;
 }
+
+export async function removeRefreshToken(token: string) {
+  return await prisma.refreshToken.delete({
+    where: {
+      token,
+    },
+  });
+}

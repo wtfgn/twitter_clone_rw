@@ -22,7 +22,12 @@ export default defineEventHandler(async (event) => {
   const tweetData = {
     text: fields.text ? fields.text.toString() : '',
     authorId: userId,
+    replyToId: null as string | null,
   };
+
+  const replyTo = fields.replyTo ? fields.replyTo.toString() : '';
+  if (replyTo && replyTo !== 'null' && replyTo !== 'undefined')
+    tweetData.replyToId = replyTo;
 
   const tweet = await createTweet(tweetData);
 

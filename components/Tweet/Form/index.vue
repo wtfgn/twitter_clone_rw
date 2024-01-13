@@ -5,19 +5,38 @@
     </div>
 
     <div v-else>
-      <TweetFormInput :user="$props.user" @on-submit="handleFormSubmit" />
+      <TweetItem v-if="props.replyTo && props.showReply" :tweet="props.replyTo" hide-actions />
+      <TweetFormInput :user="$props.user" :placeholder="$props.placeholder" @on-submit="handleFormSubmit" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { TweetFormData } from '~/composables/useTweets';
+import type { TransformedTweetData } from '~/server/transformers/tweet';
+import type { TransformedUserData } from '~/server/transformers/user';
 
-defineProps({
+const props = defineProps({
   user: {
-    type: Object,
+    type: Object as PropType<TransformedUserData | null>,
     required: true,
   },
+  placeholder: {
+    type: String,
+    default: 'What\'s happening?',
+  },
+  replyTo: {
+    type: Object as PropType<TransformedTweetData | null>,
+    default: null,
+  },
+  showReply: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits({
+  submit: (_: TransformedTweetData | Record<string, never>) => true,
 });
 
 const { postTweet } = useTweets();
@@ -26,16 +45,12 @@ const loading = ref(false);
 async function handleFormSubmit(data: TweetFormData) {
   loading.value = true;
   try {
-    await postTweet({
+    const response = await postTweet({
       text: data.text,
       mediaFiles: data.mediaFiles,
+      replyTo: props.replyTo?.id,
     });
-    // const response = await postTweet({
-    //   text: data.text,
-    //   mediaFiles: data.mediaFiles,
-    // });
-
-    // console.log(response);
+    emit('submit', response.data.value?.tweet ?? {});
   }
   catch (error) {
     console.error(error);

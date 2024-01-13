@@ -8,7 +8,7 @@ interface LoginData {
 
 export function useAuth() {
   const useAuthToken = () => useState<string>('auth_token');
-  const useAuthUser = () => useState<TransformedUserData>('auth_user');
+  const useAuthUser = () => useState<TransformedUserData | null>('auth_user');
   const useAuthLoading = () => useState<boolean>('auth_loading', () => true);
 
   const setToken = (newToken: string) => {
@@ -16,7 +16,7 @@ export function useAuth() {
     authToken.value = newToken;
   };
 
-  const setUser = (newUser: TransformedUserData) => {
+  const setUser = (newUser: TransformedUserData | null) => {
     const authUser = useAuthUser();
     authUser.value = newUser;
   };
@@ -87,10 +87,10 @@ export function useAuth() {
 
     const jwt = jwtDecode(authToken.value);
 
-    if (!jwt.exp)
+    if (!jwt || !jwt.exp)
       return;
 
-    const newRefreshTime = jwt.exp - 60000;
+    const newRefreshTime = (jwt.exp * 1000) - Date.now() - 60000;
 
     setTimeout(async () => {
       await refreshToken();
@@ -115,11 +115,25 @@ export function useAuth() {
     }
   };
 
+  const logout = async () => {
+    try {
+      await useFetch('/api/auth/logout', {
+        method: 'POST',
+      });
+      setToken('');
+      setUser(null);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     login,
     useAuthUser,
     useAuthToken,
     useAuthLoading,
     initAuth,
+    logout,
   };
 }

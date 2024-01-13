@@ -6,6 +6,8 @@ export default defineEventHandler(async (event) => {
   const endpoints = [
     '/api/auth/user',
     '/api/user/tweets',
+    '/api/tweets',
+    '/api/tweets/:id',
   ];
 
   const isHandledByMiddleware = endpoints.some((endpoint) => {
