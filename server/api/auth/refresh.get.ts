@@ -43,6 +43,7 @@ export default defineEventHandler(async (event) => {
       }));
     }
 
+    // Generate new access token
     const { accessToken } = generateTokens(user);
     return { access_token: accessToken };
   }

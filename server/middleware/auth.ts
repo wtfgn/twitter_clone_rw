@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
   // Get access token from headers
   const token = event.node.req.headers.authorization?.split(' ')[1] || '';
 
+  // Get user from access token
   const decoded = decodeAccessToken(token);
 
   if (!decoded) {
