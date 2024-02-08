@@ -2,6 +2,10 @@
 
 This is a simple clone of twitter.
 
+- Able to post tweet and reply to tweet
+- Image supported
+- Login Session
+
 
 ## Setup
 
