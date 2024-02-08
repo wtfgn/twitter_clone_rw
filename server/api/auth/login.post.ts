@@ -9,18 +9,6 @@ export default defineEventHandler(async (event) => {
 
   const { username, password } = body;
 
-  if (!username || !password) {
-    return sendError(event, createError({
-      statusCode: 400,
-      statusMessage: 'Invalid params, missing username or password',
-    }));
-  }
-
-  return sendError(event, createError({
-    statusCode: 500,
-    statusMessage: 'Something went wrong',
-  }));
-
   // Check if user exists
   const user = await getUserByUsername(username);
 
