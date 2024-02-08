@@ -1,6 +1,7 @@
-# Nuxt 3 Minimal Starter
+# Twitter-Clone
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is a simple clone of twitter.
+
 
 ## Setup
 
@@ -70,6 +71,17 @@ yarn preview
 
 # bun
 bun run preview
+```
+
+## In you .env
+```
+DATABASE_URL="Your_Databse_Url Here"
+JWT_ACCESS_TOKEN_SECRET='my_super_secret_access_token'
+JWT_REFRESH_TOKEN_SECRET='my_super_secret_refresh_token'
+
+CLOUDINARY_CLOUD_NAME=''
+CLOUDINARY_API_KEY=''
+CLOUDINARY_API_SECRET=''
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
