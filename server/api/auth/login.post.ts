@@ -16,6 +16,11 @@ export default defineEventHandler(async (event) => {
     }));
   }
 
+  return sendError(event, createError({
+    statusCode: 500,
+    statusMessage: 'Something went wrong',
+  }));
+
   // Check if user exists
   const user = await getUserByUsername(username);
 
